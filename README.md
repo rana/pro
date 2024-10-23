@@ -47,7 +47,7 @@ A production-grade trading system with capabilities for:
 - Cloud integration
 - High-performance execution
 
-The architecture emphasizes modularity through interfaces and seems designed for high-performance trading operations with both historical analysis and real-time execution capabilities.
+The architecture emphasizes modularity through interfaces and is designed for high-performance trading operations with both historical analysis and real-time execution capabilities.
 
 # Project File Tree
 
