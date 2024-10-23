@@ -1,0 +1,69 @@
+{
+	"orderCreateTransaction": {
+		"type": "MARKET_ORDER",
+		"instrument": "EUR_USD",
+		"units": "250000",
+		"priceBound": "1.19490",
+		"timeInForce": "FOK",
+		"positionFill": "DEFAULT",
+		"reason": "CLIENT_ORDER",
+		"id": "1494",
+		"userID": 4093945,
+		"accountID": "101-001-4093945-001",
+		"batchID": "1494",
+		"requestID": "78458385146938541",
+		"time": "2018-05-11T19:38:41.655958665Z"
+	},
+	"orderFillTransaction": {
+		"type": "ORDER_FILL",
+		"orderID": "1494",
+		"instrument": "EUR_USD",
+		"units": "250000",
+		"price": "1.19485",
+		"pl": "0.0000",
+		"financing": "0.0000",
+		"commission": "0.0000",
+		"accountBalance": "10000.0041",
+		"gainQuoteHomeConversionFactor": "1",
+		"lossQuoteHomeConversionFactor": "1",
+		"guaranteedExecutionFee": "0.0000",
+		"halfSpreadCost": "3.7500",
+		"reason": "MARKET_ORDER",
+		"tradeOpened": {
+			"price": "1.19485",
+			"tradeID": "1495",
+			"units": "250000",
+			"guaranteedExecutionFee": "0.0000",
+			"halfSpreadCost": "3.7500",
+			"initialMarginRequired": "5974.2000"
+		},
+		"fullPrice": {
+			"closeoutBid": "1.19462",
+			"closeoutAsk": "1.19505",
+			"timestamp": "2018-05-11T19:38:41.299535446Z",
+			"bids": [
+				{
+					"price": "1.19482",
+					"liquidity": "10000000"
+				}
+			],
+			"asks": [
+				{
+					"price": "1.19485",
+					"liquidity": "10000000"
+				}
+			]
+		},
+		"id": "1495",
+		"userID": 4093945,
+		"accountID": "101-001-4093945-001",
+		"batchID": "1494",
+		"requestID": "78458385146938541",
+		"time": "2018-05-11T19:38:41.655958665Z"
+	},
+	"relatedTransactionIDs": [
+		"1494",
+		"1495"
+	],
+	"lastTransactionID": "1495"
+}

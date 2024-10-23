@@ -1,0 +1,1 @@
+"aum".log(tru)

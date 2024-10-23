@@ -1,0 +1,167 @@
+tme.now().asn(start)
+log.ifo("START")
+
+[1m	2m 3m 5m 8m 13m	21m	34m	55m	89m	144m 233m 377m].asn(durs) // 1h29m|2h24m|3h53m|6h17m|10h10m
+flts.addsLeq(10.0 10.0 5.0).asn(prfLims)
+flts.addsLeq(10.0 10.0 5.0).asn(losLims)
+tmes.addsLeq(15m 15m 15m).asn(durLims)
+
+hst.oan().eurUsd(0s-0s).mktWeeks().asn(mktWeeks)
+hst.oan().eurUsd(0s-0s).mktDays().asn(mktDays)
+hst.oan().eurUsd(0s-0s).mktHrs().asn(mktHrs)
+mktDays.asn(mktRngs).cnt()
+
+2.asn(stmCntLim)
+2.asn(bckTrnLen)
+3.asn(trimItrLim)
+4.asn(trimMin)
+1.asn(trimForgiveLim)
+log.ifof("stmCntLim:%v bckTrnLen:%v" stmCntLim bckTrnLen)
+log.ifof("trimItrLim:%v trimMin:%v trimForgiveLim:%v" trimItrLim trimMin trimForgiveLim)
+
+durs.from(0).to(6).asn(durs)
+mktRngs.from(0).to(bckTrnLen.add(2)).asn(mktRngs)
+flts.new().asn(fwdPnlPcts)
+durs.each(dur
+	log.ifo("--- dur" dur)
+	unts.addsLss(0 mktRngs.lstIdx().sub(bckTrnLen) 1).asn(idxs)
+	idxs.each(idx
+		// plt.newVrt().asn(pltVrt)
+		tru.asn(isFstStgy)
+		sys.newMu().asn(prfmsMu)
+		hst.newPrfms().asn(bckPfmsA)
+		hst.newPrfms().asn(bckPfmsB)
+		mktRngs.cnt()
+		mktRngs.at(idx.add(bckTrnLen)).asn(fwdRng)
+		mktRngs.from(idx).to(bckTrnLen).each(bckRng
+			log.ifof("bckRng:%v bckPfmsACnt:%v" bckRng bckPfmsA.cnt())
+
+			hst.oan().eurUsd(bckRng).asn(instr)
+			instr.i(5m).ask().sma().asn(qckStm)
+			instr.i(20m).ask().sma().asn(slwStm)
+			instr.i(dur).ask().alma(6 0.85).asn(alma)
+			instr.i(dur).ask().std().asn(stm)
+			instr.i(dur).ask().max().asn(maxStm)
+			instr.i(dur).ask().min().asn(minStm)
+			maxStm.inrSub(1).asn(maxSub1Mom1)
+			minStm.inrSub(1).asn(minSub1Mom1)
+			maxSub1Mom1.inrSub(1).asn(maxSub1Mom2)
+			minSub1Mom1.inrSub(1).asn(minSub1Mom2)
+			instr.i(1s).ask().lst().asn(lst)
+			instr.i(1m).ask().sma().asn(clsStm)
+			hst.newPrcp().asn(prcp)
+			prcp.stm(stm)
+			// hst.newCnds(clsStm.inrLss(1)).asn(clsCnds)
+			hst.newCnds().asn(clsCnds)
+
+			isFstStgy.then( // find fst period stgy
+				qckStm.otrLss(0 slwStm).seq(1s qckStm.otrGtr(0 slwStm)).asn(opnCnd)
+				// maxSub1Mom2.inrGtr(1).asn(opnCnd)
+				log.ifo(" ~ TUNING CND" opnCnd)
+				opnCnd.longs(prfLims losLims durLims [instr] clsCnds).stgys().rev().asn(stgys)
+				stgys.pllEach(stgy
+					stgy.port().prfm().asn(prfm)
+					prfm.port().splt(0.0).asn(splt)
+					// prcp.splt(splt).tuneTil(0.0 stmCntLim).asn(tunedPrfm)
+					prcp.splt(splt).tuneSacfTil(0.0 stmCntLim
+						trimItrLim trimMin trimForgiveLim
+					).asn(tunedPrfm)
+					log.ifo("tunedPrfm.ana().pnlPct()" tunedPrfm.ana().pnlPct())
+					prfmsMu.lck()
+					bckPfmsA.push(tunedPrfm)
+					prfmsMu.ulck()
+
+					// log.ifo("tunedPrfm trds")
+					// log.ifo(tunedPrfm.port().stgys().at(0).trds())
+
+					// plt.newStgy().asn(pltStgy0a)
+					// pltStgy0a.stgy(stgy)
+					// pltStgy0a.stm(lst)
+					// pltStgy0a.title(str.fmt("FST %v  %v  $%v  %v%%  %vpip" lst.ttl() dur prfm.ana().pnlUsd() prfm.ana().pnlPct() prfm.ana().pipSum()))
+					// pltVrt.plt(plt.newHrz().asn(pltHrz0))
+					// pltHrz0.plt(plt.newPrcpSplt(hst.newPrcp(lst).splt(prfm.port().splt(0.0))))
+					// pltHrz0.plt(pltStgy0a)
+
+					// plt.newStgy().asn(pltStgy0b)
+					// pltStgy0b.stgy(stgy)
+					// pltStgy0b.stm(alma)
+					// pltStgy0b.title(str.fmt("FST %v  %v  $%v  %v%%  %vpip" alma.ttl() dur prfm.ana().pnlUsd() prfm.ana().pnlPct() prfm.ana().pipSum()))
+					// pltVrt.plt(plt.newHrz().asn(pltHrz0))
+					// pltHrz0.plt(plt.newPrcpSplt(hst.newPrcp(alma).splt(prfm.port().splt(0.0))))
+					// pltHrz0.plt(pltStgy0b)
+
+					// plt.newStgy().asn(pltStgy0c)
+					// pltStgy0c.stgy(stgy)
+					// pltStgy0c.stm(clsStm)
+					// pltStgy0c.title(str.fmt("FST %v  %v  $%v  %v%%  %vpip" clsStm.ttl() dur prfm.ana().pnlUsd() prfm.ana().pnlPct() prfm.ana().pipSum()))
+					// pltVrt.plt(plt.newHrz().asn(pltHrz1))
+					// pltHrz1.plt(plt.newPrcpSplt(hst.newPrcp(clsStm).splt(prfm.port().splt(0.0))))
+					// pltHrz1.plt(pltStgy0c)
+				)
+				fls.asn(isFstStgy 2)
+			).else( // tune existing stgy
+				bckPfmsA.pllEach(prfmA
+					prfmA.port().splt(0.0).asn(splt)
+					// prcp.splt(splt).tuneTil(0.0 stmCntLim).asn(tunedPrfmB)
+					prcp.splt(splt).tuneSacfTil(0.0 stmCntLim
+						trimItrLim trimMin trimForgiveLim
+					).asn(tunedPrfmB)
+					prfmsMu.lck()
+					bckPfmsB.push(tunedPrfmB)
+					prfmsMu.ulck()
+				)
+				bckPfmsA.asn(prfmsTmp)
+				bckPfmsB.asn(bckPfmsA 2)
+				prfmsTmp.clr()
+				prfmsTmp.asn(bckPfmsB 2)
+			)
+		) // end training
+
+		log.ifo("### bck rng ###" mktRngs.rngMrg(idx idx.add(bckTrnLen).sub(1)))
+		log.ifo("### fwd rng ###" fwdRng)
+		bckPfmsA.cnt().eql(0).then(
+			log.ifo("NONE")
+			fwdPnlPcts.push(0.0)
+		).else(
+			bckPfmsA.srtDscPnlPct().fst().asn(bckPrfm)
+			bckPrfm.port().rng(fwdRng).prfm().asn(fwdPrfm)
+			log.ifo("BCK" bckPrfm.ana())
+			log.ifo("FWD" fwdPrfm.ana())
+			fwdPnlPcts.push(fwdPrfm.ana().pnlPct())
+
+			hst.oan().eurUsd(fwdRng).asn(instr)
+			instr.i(dur).ask().alma(6 0.85).asn(alma)
+			instr.i(1s).ask().lst().asn(lst)
+			instr.i(20s).ask().sma().asn(clsStm)
+
+			// // 1
+			// plt.newStgy().asn(pltStgy1a)
+			// pltStgy1a.stgy(fwdPrfm.port().stgys().at(0))
+			// pltStgy1a.stm(lst)
+			// pltStgy1a.title(str.fmt("FWD %v  %v  $%v  %v%%  %vpip" lst.ttl() dur fwdPrfm.ana().pnlUsd() fwdPrfm.ana().pnlPct() fwdPrfm.ana().pipSum()))
+			// pltVrt.plt(plt.newHrz().asn(pltHrz1))
+			// pltHrz1.plt(plt.newPrcpSplt(hst.newPrcp(lst).splt(fwdPrfm.port().splt(0.0))))
+			// pltHrz1.plt(pltStgy1a)
+
+			// plt.newStgy().asn(pltStgy1b)
+			// pltStgy1b.stgy(fwdPrfm.port().stgys().at(0))
+			// pltStgy1b.stm(alma)
+			// pltStgy1b.title(str.fmt("FWD %v  %v  $%v  %v%%  %vpip" alma.ttl() dur fwdPrfm.ana().pnlUsd() fwdPrfm.ana().pnlPct() fwdPrfm.ana().pipSum()))
+			// pltVrt.plt(plt.newHrz().asn(pltHrz1))
+			// pltHrz1.plt(plt.newPrcpSplt(hst.newPrcp(alma).splt(fwdPrfm.port().splt(0.0))))
+			// pltHrz1.plt(pltStgy1b)
+
+			// plt.newStgy().asn(pltStgy1c)
+			// pltStgy1c.stgy(fwdPrfm.port().stgys().at(0))
+			// pltStgy1c.stm(clsStm)
+			// pltStgy1c.title(str.fmt("FWD %v  %v  $%v  %v%%  %vpip" clsStm.ttl() dur fwdPrfm.ana().pnlUsd() fwdPrfm.ana().pnlPct() fwdPrfm.ana().pipSum()))
+			// pltVrt.plt(plt.newHrz().asn(pltHrz1))
+			// pltHrz1.plt(plt.newPrcpSplt(hst.newPrcp(clsStm).splt(fwdPrfm.port().splt(0.0))))
+			// pltHrz1.plt(pltStgy1c)
+		)
+
+		// pltVrt.sho()
+	)
+	log.ifof("ttl pnlPct:%v %v fwdPnlPcts:%v" fwdPnlPcts.sum().trnc(1) dur fwdPnlPcts)
+)
+log.ifo("DONE" tme.now().sub(start))

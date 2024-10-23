@@ -1,0 +1,75 @@
+#2018-5-1/12h.asn(from) 
+#2018-5-1/12h30m.asn(to)
+
+plt.newVrtRng().asn(vrt1)
+vrt1.hrzSclVal(5m)
+#vrt1.hrzRng(2018-5-1/12h 2018-5-1/12h30m)
+
+# BOLLINGER http://stockcharts.com/school/doku.php?id=chart_school:technical_indicators:bollinger_bands
+# Middle Band = 20-day simple moving average (SMA)
+# Upper Band = 20-day SMA + (20-day standard deviation of price x 2) 
+# Lower Band = 20-day SMA - (20-day standard deviation of price x 2)
+vrt1.rng().asn(pltRng1)
+#pltRng1.vrtScl(6.0)
+#pltRng1.vrtSclVal(0.00001)
+ana.oan().hst().eurUsd().asn(instr1)
+instr1.s1().asks().lst().asn(stm1)
+pltRng1.stm(stm1 clr.white)
+5.asn(smaLen)
+stm1.aggSma(smaLen).asn(stm1Sma)
+pltRng1.stm(stm1Sma clr.cyan700)
+stm1.aggStd(smaLen).sclMul(2.0).asn(blngr)
+stm1Sma.otrSub(0 blngr).asn(blngrBtm)
+stm1Sma.otrAdd(0 blngr).asn(blngrTop)
+pltRng1.stmBnd(blngrBtm blngrTop clr.hex("#0f0f0f") clr.deepPurpleA400)
+stm1.otrLss(0 blngrBtm).asn(stm1Lss)
+stm1.otrGtr(0 blngrBtm).asn(stm1Gtr)
+stm1Lss.seq(2s stm1Gtr).asn(blngrBtmCrs)
+pltRng1.cnd(blngrBtmCrs clr.orangeA400)
+
+# PCTB http://stockcharts.com/school/doku.php?id=chart_school:technical_indicators:bollinger_band_perce
+# %B = (Price - Lower Band)/(Upper Band - Lower Band)
+stm1.otrSub(0 blngrBtm).asn(numB)
+blngrTop.otrSub(0 blngrBtm).asn(denomB)
+numB.otrDiv(0 denomB).asn(pctB)
+pctB.aggSma(30).asn(pctBSma)
+vrt1.rng().stm(pctB clr.green400).vrtScl(0.25).asn(pltPctb1)
+pltPctb1.stm(pctBSma clr.cyan700)
+pltPctb1.hrzBnd(0.0 1.0 clr.hex("#0f0f0f") clr.deepPurpleA400)
+pltPctb1.hrzLn(0.5 clr.deepPurple700)
+pltPctb1.cnd(blngrBtmCrs clr.orangeA400)
+
+#stm1.sclRem(0.0010).sclMul(instr1.pipScl()).asn(rem10)
+#vrt1.rng().stm(rem10 clr.orange100).vrtScl(0.25).asn(pltRem10)
+#pltRem10.hrzLn(0.0 clr.deepPurple700)
+#pltRem10.cnd(blngrBtmCrs clr.orangeA400)
+
+#stm1.inrSub(1).sclMul(instr1.pipScl()).asn(stm1Sub1)
+#vrt1.rng().stm(stm1Sub1 clr.green700).vrtScl(0.25).asn(pltSub1)
+#pltSub1.hrzLn(0.0 clr.deepPurple700)
+#pltSub1.cnd(blngrBtmCrs clr.orangeA400)
+
+vrt1.sho()
+
+
+blngrBtmCrs.long(1.0 1.0 2h instr1).logPerf()
+blngrBtmCrs.long(2.0 2.0 2h instr1).logPerf()
+blngrBtmCrs.long(4.0 4.0 2h instr1).logPerf()
+blngrBtmCrs.long(6.0 6.0 2h instr1).logPerf()
+blngrBtmCrs.long(7.0 7.0 2h instr1).logPerf()
+blngrBtmCrs.long(8.0 8.0 2h instr1).logPerf()
+blngrBtmCrs.long(9.0 9.0 2h instr1).logPerf()
+blngrBtmCrs.long(10.0 10.0 2h instr1).logPerf()
+blngrBtmCrs.long(11.0 11.0 2h instr1).logPerf()
+blngrBtmCrs.long(15.0 15.0 2h instr1).logPerf()
+
+
+
+
+# sys.go:86: Stgy.LogPerf prv.perf(isLong:tru prfLim:9.0 losLim:9.0 wnd:2h revAvg:0.2 revMdn:-0.2 revMin:-10.1 revMax:9.4 durAvg:49m24s durMdn:34m8s durMin:1m16s durMax:2h1m50s dayCnt:35.0 trdCnt:49.0 scsPct:46.9 scsPerDay:0.6 opnPerDay:1.4 revPerDay:0.3 usdPerDay:41.828587 usdSum:1464.0005 pnlQty:1500000.0)
+# sys.go:86: --- Stgy.LogPerf ana.oan().hst().eurUsd().s1().asks().lst().otrLss(0 ana.oan().hst().eurUsd().s1().asks().lst().aggSma(5).otrSub(0 ana.oan().hst().eurUsd().s1().asks().lst().aggStd(5).sclMul(2.0))).seq(2s ana.oan().hst().eurUsd().s1().asks().lst().otrGtr(0 ana.oan().hst().eurUsd().s1().asks().lst().aggSma(5).otrSub(0 ana.oan().hst().eurUsd().s1().asks().lst().aggStd(5).sclMul(2.0)))).long(10.0 10.0 2h ana.oan().hst().eurUsd())
+# sys.go:86: Stgy.LogPerf prv.perf(isLong:tru prfLim:10.0 losLim:10.0 wnd:2h revAvg:1.2 revMdn:3.1 revMin:-10.8 revMax:10.2 durAvg:59m14s durMdn:48m28s durMin:1m23s durMax:2h1m50s dayCnt:35.0 trdCnt:49.0 scsPct:53.0 scsPerDay:0.7 opnPerDay:1.4 revPerDay:1.7 usdPerDay:264.1714 usdSum:9245.999 pnlQty:1500000.0)
+# sys.go:86: --- Stgy.LogPerf ana.oan().hst().eurUsd().s1().asks().lst().otrLss(0 ana.oan().hst().eurUsd().s1().asks().lst().aggSma(5).otrSub(0 ana.oan().hst().eurUsd().s1().asks().lst().aggStd(5).sclMul(2.0))).seq(2s ana.oan().hst().eurUsd().s1().asks().lst().otrGtr(0 ana.oan().hst().eurUsd().s1().asks().lst().aggSma(5).otrSub(0 ana.oan().hst().eurUsd().s1().asks().lst().aggStd(5).sclMul(2.0)))).long(11.0 11.0 2h ana.oan().hst().eurUsd())
+# sys.go:86: Stgy.LogPerf prv.perf(isLong:tru prfLim:11.0 losLim:11.0 wnd:2h revAvg:0.4 revMdn:-0.1 revMin:-12.4 revMax:11.0 durAvg:1h5m22s durMdn:52m3s durMin:1m25s durMax:2h1m50s dayCnt:35.0 trdCnt:49.0 scsPct:48.9 scsPerDay:0.6 opnPerDay:1.4 revPerDay:0.5 usdPerDay:83.18565 usdSum:2911.4978 pnlQty:1500000.0)
+# sys.go:86: --- Stgy.LogPerf ana.oan().hst().eurUsd().s1().asks().lst().otrLss(0 ana.oan().hst().eurUsd().s1().asks().lst().aggSma(5).otrSub(0 ana.oan().hst().eurUsd().s1().asks().lst().aggStd(5).sclMul(2.0))).seq(2s ana.oan().hst().eurUsd().s1().asks().lst().otrGtr(0 ana.oan().hst().eurUsd().s1().asks().lst().aggSma(5).otrSub(0 ana.oan().hst().eurUsd().s1().asks().lst().aggStd(5).sclMul(2.0)))).long(15.0 15.0 2h ana.oan().hst().eurUsd())
+# sys.go:86: Stgy.LogPerf prv.perf(isLong:tru prfLim:15.0 losLim:15.0 wnd:2h revAvg:0.1 revMdn:-0.2 revMin:-17.1 revMax:15.3 durAvg:1h31m39s durMdn:2h1s durMin:5m51s durMax:2h2m48s dayCnt:35.0 trdCnt:47.0 scsPct:46.8 scsPerDay:0.6 opnPerDay:1.3 revPerDay:0.2 usdPerDay:26.44285 usdSum:925.49976 pnlQty:1500000.0)

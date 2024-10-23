@@ -1,0 +1,133 @@
+IMMEDIATE:
+
+	+ Stgy
+		- Run AggSar search on existing blngr band stgys
+		- StmCnd: Intersection: stm values intersecting each cnd tme
+		- StmCnd: Intersection Rng: Cross section range detection using distance algorithm
+
+	+Plt (Search for quality entries)
+		- Cross Section plot of stm values intersecting all cnd tmes
+		- Histogram of stream at all Cnd tmes
+			- Cnd refinement/development using histogram binning across pll stm features
+		- Rng plt centered at single tme (Cnd tme)
+		- Vertical stack of Rng plts center-aligned at each Cnd tme (allows for feature detection)
+
+	+ Instr
+		- Add minor currencies to tic intake
+	+ Rlt:
+		- record trade data
+			- what strategy is used; trade strat stats; want to know expectation
+			- record Oanda trade id
+			- record to cld table
+			- TrdClsReason enum
+
+	+ Prd:
+		- Place ana.Instr stats in cld to allow retrieve spread threshold without local db
+		- Consider how to have the analytics engine always running in background and restarted if rebooted
+		- Use Stackdriver logging/tracing for prd deployment
+
+	+ StgyPrfm
+		- Develop confidence factor blend
+			- Highest ScsPct
+			- Highest RevMin
+			- Lowest LosLim
+			- Lowest DurMdn
+
+	+ Cnd
+		- Or: same as Stgy Cnds. Use a tmeLim for cnd delivery. Or is ANY within 2s
+			- Variadic cnds
+			- Deliver TmeLim
+		- And
+			- Change to variadic cnds
+			- Add Deliver TmeLim. It is different than Seq. And is Pll, Seq is sequential 2s then 2s. And is all within 2s
+		
+	+ Scp: revise scp approach
+		- existing: asn, acs, each, eachPll, then, else
+		- sel on arr: same as where, make pll in implementation
+		- ari: in-place on scp: inc, dec, addBy, subBy, mulBy, divBy
+		- ari atm: in-place on scp: atmInc, atmDec, atmAddBy, atmSubBy, atmMulBy, divBy
+
+	+ Portfolio: optimization search
+
+	+ Regime charaterization by one or more stream features within a time range
+		- Regime characterization search
+		- Regime portfolio: load Stgies appearing in hst regime
+		- Regime portfolio optimization
+	+ Rlt regime detection/matching. What regime are we in?
+		- Create realtime regime portfolio: load all stgies for each realtime regime (hour, day, week, etc...)
+		- Optimize realtime regime portfolio
+		- Trade optimized realtime regime portfolio
+
+	+ Portfolio: slice of profitable stgies with a performance
+		- Calculate portfolio performance
+	+ PrtRng: create
+	+ Hst Tme Fltr: ana.oan().hst(2018-4-1 2018-5-1).audUsd(); prm variadic?, rlt symmetric
+	+ Obj interface: String() method, all objects
+	+ pro/lng: in-lang logging
+	+ Vscode: prolang color support
+	+ VsCode: Intellisense
+
+	+ Test
+		- Stms: rlt stmsMnr
+		- Cnds: rlt cndsMnr
+		
+	+ Sys
+		- Cross instrument usage
+		- Tme/Val interpolation
+		- Stm
+		- Cnd
+		- Strat
+	+ Log
+		- in-language logging
+
+	+ Rlt:
+		- consider how to clear out rlt stm data; on weekend? memory consumption on machine will overflow if not trimmed at some point
+		- rlt tkr to monitor when to clear rlt data after week?
+		- rlt.cls() method to close out all realtime stgys
+		- rlt.opn(): load and process hst data into rlt graph for current moment?
+	+ Account:
+		- consider how to specify different accounts
+			- live vs practive
+			- different people
+
+	+ Plt
+		- Legend for stm with coloir and name
+	+ Tkr
+	- tme.Tkr: scp function calling (for periodic stgy cloud saves)
+
+	+Inrvl
+		- Store InrvlBnds in prv.Stm; no need to recompute more than once for hst and rlt?
+
+Vis:
+	Plt:
+
+SrchLong:
+	+ Pre-Count calculation
+
+Prolang:
++ Var: Change IsSingle to var usage 
+	# enables logging from anywhere
+	# enabled 
+	- Cor
+	- Ana
++	Trds Fld to Tbl column mapping
++	Trds .showTbl()
++	Trds Whr<prop>
++	Trds Srt<prop>(Asc|Dsc)
+
+ProBox:
+	+ Table
+	+ Taber (support Multiple Table, Histogram etc)
+	+ ProgressBar
+	
+
+	+ Test
+		- Variadic parameter generation for 0, 1, 3 arguments. Support ana fns
+		- Stgy: need different cnd in variadic parameters for th
+		- Oan: Setup mock endpoints to mimic real trades with server
+
+	+ Tme
+		- Change Date literal?
+			- 2017y11m12dT23h37m2s
+			- 2017-11-12/23-34-56
+			- 2017-11-12/23h34m56s

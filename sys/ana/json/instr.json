@@ -1,0 +1,19 @@
+{
+	"instruments": [
+		{
+			"name": "EUR_USD",
+			"type": "CURRENCY",
+			"displayName": "EUR/USD",
+			"pipLocation": -4,
+			"displayPrecision": 5,
+			"tradeUnitsPrecision": 0,
+			"minimumTradeSize": "1",
+			"maximumTrailingStopDistance": "1.00000",
+			"minimumTrailingStopDistance": "0.00050",
+			"maximumPositionSize": "0",
+			"maximumOrderUnits": "100000000",
+			"marginRate": "0.02"
+		}
+	],
+	"lastTransactionID": "1482"
+}
