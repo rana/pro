@@ -2,6 +2,16 @@
 
 A sophisticated algorithmic trading system, compiler, and domain-specific language written in Go.
 
+A production-grade trading system with capabilities for:
+- Strategy development and backtesting
+- Real-time market data processing
+- Machine learning integration
+- Data visualization
+- Cloud integration
+- High-performance execution
+
+The architecture emphasizes modularity through interfaces and is designed for high-performance trading operations with both historical analysis and real-time execution capabilities.
+
 Here's a summary of the key components:
 
 1. Core System Architecture:
@@ -12,7 +22,7 @@ Here's a summary of the key components:
   - `IActr`: Actor interface for running different types of operations
   - `ILrnr`: Machine learning interface for model fitting/prediction
 
-1. Major Components:
+2. Major Components:
 - `/ana`: Analytics package for historical and real-time analysis
 - `/app`: UI application components 
 - `/bsc`: Basic data types and operations
@@ -24,7 +34,7 @@ Here's a summary of the key components:
 - `/tpl`: Templates for code generation
 - `/tst`: Testing utilities
 
-1. Key Features:
+3. Key Features:
 - Custom DSL (Domain Specific Language) for trading strategies
 - Real-time data processing capabilities
 - Integration with BigQuery for data storage/retrieval
@@ -33,21 +43,13 @@ Here's a summary of the key components:
 - Comprehensive testing framework
 - Both historical and real-time analysis capabilities
 
-1. Project Scale:
+4. Project Scale:
 - ~288,552 lines of code
 - 64 directories
 - 503 files
 - Extensive use of code generation (many `.gen.go` files)
 
-A production-grade trading system with capabilities for:
-- Strategy development and backtesting
-- Real-time market data processing
-- Machine learning integration
-- Data visualization
-- Cloud integration
-- High-performance execution
 
-The architecture emphasizes modularity through interfaces and is designed for high-performance trading operations with both historical analysis and real-time execution capabilities.
 
 # Project File Tree
 
