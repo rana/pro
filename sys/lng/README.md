@@ -1,7 +1,7 @@
 # `lng` - Language Processing Component
 
 ## Overview
-A sophisticated language processing system implemented in Go, featuring lexical analysis, parsing, and compilation capabilities for multiple domain-specific languages (DSLs). This component is part of a larger algorithmic trading engine and handles configuration, JSON processing, and a custom programming language.
+A sophisticated language processing system implemented in Go, featuring lexical analysis, parsing, and compilation capabilities for a domain-specific language (DSL). This component is part of a larger algorithmic trading engine and handles configuration, JSON processing, and a custom programming language.
 
 ## Key Features
 
